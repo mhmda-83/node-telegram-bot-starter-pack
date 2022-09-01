@@ -1,16 +1,18 @@
+/* eslint-disable import/first */
 import dotenv from 'dotenv';
 import { IpFilter as ipfilter } from 'express-ipfilter';
 import { webhookCallback } from 'grammy';
 import path from 'path';
 
-import bot from './bot';
 import { getConfigs } from './configs';
-import { connect } from './prisma';
-import app from './web';
 
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 const configs = getConfigs();
+
+import bot from './bot';
+import { connect } from './prisma';
+import app from './web';
 
 (async () => {
   await connect();
