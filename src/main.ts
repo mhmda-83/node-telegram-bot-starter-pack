@@ -1,6 +1,6 @@
-/* eslint-disable import/first */
+import axios from 'axios';
 import dotenv from 'dotenv';
-import { IpFilter as ipfilter } from 'express-ipfilter';
+import { IpFilter as ipFilter } from 'express-ipfilter';
 import { webhookCallback } from 'grammy';
 import path from 'path';
 
@@ -14,16 +14,25 @@ import bot from './bot';
 import { connect } from './prisma';
 import app from './web';
 
-(async () => {
+async function main() {
   await connect();
   console.log('database connected.');
 
   if (configs.isDevelopment) {
     bot.start();
-  } else if (configs.isDevelopment) {
+  } else {
+    const { data } = await axios.get(
+      'https://core.telegram.org/resources/cidr.txt',
+    );
+
+    const telegramValidIps: string[] = data
+      .split('\n')
+      .map((ip: string) => ip.trim())
+      .filter((ip: string) => ip);
+
     app.use(
       '/bot',
-      ipfilter(['149.154.160.0/20', '91.108.4.0/22'], { mode: 'allow' }),
+      ipFilter(telegramValidIps, { mode: 'allow' }),
       webhookCallback(bot, 'express'),
     );
     await bot.api.setWebhook(`${configs.applicationBaseUrL}/bot`);
@@ -33,4 +42,6 @@ import app from './web';
   app.listen(Number(configs.port), () => {
     console.log(`server is up and running on port ${configs.port}`);
   });
-})();
+}
+
+main();
