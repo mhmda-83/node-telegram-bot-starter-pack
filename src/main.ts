@@ -18,9 +18,9 @@ import app from './web';
   await connect();
   console.log('database connected.');
 
-  if (configs.nodeEnv === 'development') {
+  if (configs.isDevelopment) {
     bot.start();
-  } else if (configs.nodeEnv === 'production') {
+  } else if (configs.isDevelopment) {
     app.use(
       '/bot',
       ipfilter(['149.154.160.0/20', '91.108.4.0/22'], { mode: 'allow' }),

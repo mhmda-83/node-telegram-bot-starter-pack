@@ -1,7 +1,7 @@
 import getEnv from './getEnv';
 
 const getConfigs = () => ({
-  nodeEnv: getEnv('NODE_ENV', 'development'),
+  isDevelopment: getEnv('NODE_ENV', 'development') === 'development',
   port: getEnv('port', '3000'),
   applicationBaseUrL: getEnv('APPLICATION_BASE_URL', 'https://localhost'),
   botToken: getEnv('BOT_TOKEN'),
