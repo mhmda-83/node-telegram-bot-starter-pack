@@ -1,6 +1,7 @@
+import { conversations } from '@grammyjs/conversations';
+import { RedisAdapter } from '@grammyjs/storage-redis';
 import { Bot, session } from 'grammy';
 
-import { RedisAdapter } from '@grammyjs/storage-redis';
 import { getConfigs } from '../configs';
 import redis from '../redis';
 import { BotContext } from './types/botContext';
@@ -22,5 +23,6 @@ bot.use(
     storage: redisSessionStorage,
   }),
 );
+bot.use(conversations());
 
 export default bot;

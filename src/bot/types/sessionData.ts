@@ -1,3 +1,1 @@
-export interface SessionData {
-  name?: string;
-}
+export interface SessionData {}
